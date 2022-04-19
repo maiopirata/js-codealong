@@ -60,4 +60,77 @@ console.log(Object.keys(emptyObject).length === 0)
  */
 const findMostExpensiveItem = (shoppingBasketArr) => {
     // Write code here
+    // 1. using object.Values and then if
+    // 2. use Math.max on the price array
+    // 3. use a reduce to keep the max value
+    // 4. filter for the price (array of prices, looping though the array, keep the highest value)
+
+    // a. looping though the objects and keep the best one (1, 4, 3)
+    // b. sorting the array
+
+    // a with a simple forEach
+    // a good way as well
+    let mostExpensiveItemIdx = -1;
+    let maxPrice = 0;
+    shoppingBasketArr.forEach((item, index) => {
+        if (item.price > maxPrice) {
+            maxPrice = item.price;
+            mostExpensiveItemIdx = index;
+        }
+    })
+    // return shoppingBasketArr[mostExpensiveItemIdx];
+
+    // a with a reduce
+    const intialValue = {
+        name: 'empty shopping bag',
+        price: 0, 
+        hasFreeShipping: true,
+        quantity: 1
+    };
+    // first iteration
+    // acc = { name: 'not expensive', price: 0 }
+    // item = { name: 'tv', price: 300, hasFreeShipping: true, quantity: 1 }
+    // iter = 0
+    // arr = myBasket
+
+    // other iteration
+    // acc = return of the previous iteration
+    // item = the other item in my shopping bag
+    // iter = 1
+    // arr = myBasket   n time complexity 10M => 10M operation
+    // preferred way
+    const mostExpItem = shoppingBasketArr.reduce((acc, item, iter, arr) => {
+        if (item.price > acc.price) return item
+        else return acc
+    }, intialValue)
+
+    // not a smart way
+    // b. sorting the array n * lon (n) 10M => 60M operation
+    // compareFn > 0 -> swap a,b
+    // compareFn <= 0 -> keep a,b
+    return shoppingBasketArr.sort((a, b) => b.price - a.price)[0] 
 };
+
+const myBasket = [
+    {
+        name: 'chair',
+        price: 49,
+        hasFreeShipping: true,
+        quantity: 8
+    },
+    {
+        name: 'tv',
+        price: 300,
+        hasFreeShipping: true,
+        quantity: 1
+    },
+    {
+        name: 'sofa',
+        price: 280,
+        hasFreeShipping: true,
+        quantity: 1
+    }
+]
+
+const mostExpensive = findMostExpensiveItem(myBasket)
+console.log(mostExpensive)
