@@ -32,24 +32,24 @@ const employes = [
 
 const getEmployeeQuotes = (employeeArr) => { // first function
     return employeeArr.map( // map is the second function (returns an array)
-            (employe, iter) => { // inner function is the third function
-        if (iter === 0) {
-            console.log('keys', Object.keys(employe))
-            console.log('values', Object.values(employe))
-            console.log('entries', Object.entries(employe))
-            console.log('how many key we have', Object.keys(employe).length)
-        }
-        return employe.quote
-    })
+        (employe, iter) => { // inner function is the third function
+            // if (iter === 0) {
+                // console.log('keys', Object.keys(employe))
+                // console.log('values', Object.values(employe))
+                // console.log('entries', Object.entries(employe))
+                // console.log('how many key we have', Object.keys(employe).length)
+            // }
+            return employe.quote
+        })
 };
 
 const quotes = getEmployeeQuotes(employes)
-console.log(quotes)
+// console.log(quotes)
 
 const emptyObject = {
 }
 
-console.log(Object.keys(emptyObject).length === 0)
+// console.log(Object.keys(emptyObject).length === 0)
 
 /**
  * A function to find the most expensive item in the basket and returns it in order to offer this customer a discount
@@ -83,7 +83,7 @@ const findMostExpensiveItem = (shoppingBasketArr) => {
     // a with a reduce
     const intialValue = {
         name: 'empty shopping bag',
-        price: 0, 
+        price: 0,
         hasFreeShipping: true,
         quantity: 1
     };
@@ -108,7 +108,7 @@ const findMostExpensiveItem = (shoppingBasketArr) => {
     // b. sorting the array n * lon (n) 10M => 60M operation
     // compareFn > 0 -> swap a,b
     // compareFn <= 0 -> keep a,b
-    return shoppingBasketArr.sort((a, b) => b.price - a.price)[0] 
+    return shoppingBasketArr.sort((a, b) => b.price - a.price)[0]
 };
 
 const myBasket = [
@@ -123,14 +123,74 @@ const myBasket = [
         price: 300,
         hasFreeShipping: true,
         quantity: 1
-    },
-    {
-        name: 'sofa',
-        price: 280,
-        hasFreeShipping: true,
-        quantity: 1
     }
 ]
 
 const mostExpensive = findMostExpensiveItem(myBasket)
-console.log(mostExpensive)
+// console.log(mostExpensive)
+
+/**
+ * A function which add a new key of totalPrice to each shopping basket item
+ * in the array where total cost is
+ * the price * the quantity of items ordered i.e.
+ * Then returns a new array of objects
+ *
+ * @param {{name: string, price: number, hasFreeShipping: boolean, quantity: number}[]} shoppingBasketArr - An array of basket items for an online shop
+ * @returns {{name: string, price: number, hasFreeShipping: boolean, quantity: number, totalPrice: number}[]} A new array where each object has had a total price added to it
+ */
+const settotalPrice = (shoppingBasketArr) => {
+    // with forEach
+    const newArray = []
+    shoppingBasketArr.forEach(item => {
+        const newItem = {
+            ...item,
+            totalPrice: item.price * item.quantity
+        }
+        newArray.push(newItem)
+    })
+        
+    // with map
+    const newArray2 = shoppingBasketArr.map(item => {
+        return {
+            ...item,
+            totalPrice: item.price * item.quantity
+        }
+    })
+    return newArray2
+};
+
+const basketWithTotalPrice = settotalPrice(myBasket)
+// console.log(basketWithTotalPrice)
+
+/**
+ * A function which takes an array of meal objects, removes unneeded keys
+ * from the objects and returns a new array of meal objects.
+ *
+ * @param {{id: number, name: string, ingredients: string[], country: string, timeStamp: number, userCreated: string}[]} mealsArr - An array containing meal objects
+ * @returns {{id: number, name: string, ingredients: string[], country: string}[]} An array of cleaned meal objects
+ */
+const getImportantKeys = (mealsArr) => {
+    const newMeals = mealsArr.map(item => {
+        return {
+            id: item.id,
+            name: item.name,
+            ingredients: item.ingredients,
+            country: item.country
+        }
+    })
+    return newMeals
+};
+
+const meals = [
+    {
+        id: 0,
+        name: 'pasta bolognese',
+        ingredients: ['pasta', 'salt', 'bolognese souce'],
+        country: 'Italy',
+        timeStamp: 1000,
+        userCreated: 'Marco'
+    }
+]
+
+const newMeals = getImportantKeys(meals)
+console.log(newMeals)
